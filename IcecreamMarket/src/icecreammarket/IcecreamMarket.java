@@ -2,6 +2,7 @@ package icecreammarket;
 
 import java.io.IOException;
 
+import icecream.controller.IcecreamController;
 import icecream.view.IcecreamViewer;
 
 public class IcecreamMarket {
@@ -10,7 +11,10 @@ public class IcecreamMarket {
 		
 		IcecreamViewer view = new IcecreamViewer();
 		view.welcome();
-		view.mainMenu();
+		view.showMenu();
+		
+		IcecreamController cntr = new IcecreamController(view);
+		cntr.inputNum();
 	}
 	
 }
