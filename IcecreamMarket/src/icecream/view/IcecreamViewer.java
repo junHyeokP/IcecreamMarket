@@ -4,13 +4,14 @@ import java.util.Scanner;
 
 import icecream.model.Cart;
 import icecream.model.Customer;
+import icecream.model.IcecreamCup;
 import icecream.model.IcecreamFridge;
 
 public class IcecreamViewer {
 
 	
 	public void welcome() {
-		showMessage("온라인 아이스크림 가게에 오신걸 환영합니다, 원하시는 메뉴의 번호를 입력해주세요.");
+		showMessage("온라인 아이스크림 가게에 오신걸 환영합니다.");
 	}
 	
 	public int menuInput (String[] menuList) { // 아이스크림 메뉴 출력
@@ -20,7 +21,7 @@ public class IcecreamViewer {
 		int menu;
 		
 		do {
-			System.out.print(">> 메뉴 선택 : ");
+			System.out.print(">> 메뉴 선택 (번호 입력) : ");
 			menu = inputNumberWithValidation();
 			if (menu < 0 || menu >= menuList.length)
 				System.out.println("0부터 " + (menuList.length - 1) + "까지의 숫자를 입력해주세요.");
@@ -154,7 +155,7 @@ public class IcecreamViewer {
 			
 			System.out.println();
 			// 장바구니 보여주기
-			System.out.println("***** 주문할 도서 ******");
+			System.out.println("***** 주문할 아이스크림 ******");
 			displayCart(cart);
 			
 			// 배송 정보 보여주기 - 고객 이름, 전화번호, 주소, 이메일주소
@@ -203,6 +204,9 @@ public class IcecreamViewer {
 			return in.nextLine();
 		}
 
+		public void showTaste() {
+			System.out.println("초콜릿 / 바나나 / 바닐라 / 딸기 / 망고 / 커피 맛 중 아무거나 1개 이상 적어주세요.");
+		}
 		
 
 

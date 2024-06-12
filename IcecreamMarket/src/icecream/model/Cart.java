@@ -31,6 +31,8 @@ private ArrayList<CartItem> itemList = new ArrayList<>();
 			item.addQuantity(1);
 		}
 	}
+	
+
 
 	private CartItem getCartItem(Icecream icecream) {
 		

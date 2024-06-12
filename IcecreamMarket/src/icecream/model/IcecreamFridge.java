@@ -72,6 +72,7 @@ public class IcecreamFridge {
 		}
 		return null;
 	}
+	
 
 	public int getMaxQuantity() {
 		return this.MAX_QUANTITY;
@@ -113,6 +114,14 @@ public class IcecreamFridge {
 			e.printStackTrace();
 		} 
 	}
+
+
+	public Icecream getIcecreamCupByName(String name, IcecreamCup icup) {
+		return icup.getIcecreamFromCup(); // 아이스크림 컵 자체를 담으려 했는데 방법이 안떠올라서 그냥 아이스크림을 담음
+	}
+
+
+	
 
 
 }

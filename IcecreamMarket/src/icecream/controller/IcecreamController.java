@@ -3,6 +3,7 @@ package icecream.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 import icecream.model.Cart;
 import icecream.model.Customer;
@@ -13,7 +14,6 @@ import icecream.view.IcecreamViewer;
 
 public class IcecreamController {
 	
-	private int menuNum;
 	IcecreamViewer view;
 	
 	Cart iCart;
@@ -71,14 +71,78 @@ public class IcecreamController {
 	}
 	
 	private void addIcecream2Cart() {
+		
+		String ice = selectIcecream(); // 아이스크림 유형 선택
+		if (ice.equals("믹스")) {
+			view.showTaste();
+			String cream = choseTaste();
+			icup = icecreamMix(cream); // 컵에 아이스크림 맛들을 넣기
+			String name = icup.getTaste(); // 컵에 담긴 맛들을 name에 저장
+			iCart.addItem(fridge.getIcecreamCupByName(name, icup)); // 장바구니에 담기
+		}	
+		else if (ice.equals("단품")) {
 		view.displayIcecreamInfo(fridge);
 		String name = view.selectIcecreamName(fridge);
 		iCart.addItem(fridge.getIcecreamByName(name));
 		view.showMessage("장바구니에 아이스크림을 추가하였습니다.");
+		}
 	}
 
+	private String selectIcecream() { // 1. 유형 선택
+		
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		try {
+		view.showMessage("아이스크림 유형을 선택해주세요 (단품 혹은 믹스 입력) >> ");
+		return bf.readLine();
+		} catch (IOException e) {
+			view.showMessage("잘못된 입력이오니 다시 입력해주세요.");
+			return selectIcecream();
+		}
+	}
+	
+	private String choseTaste() { // 믹스 선택 시 아이스크림컵에 담을 맛들을 입력
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		try {
+		view.showMessage("컵에 여러가지 맛들을 층층이 쌓습니다. 넣을 맛들을 입력해주세요. >>");
+		String cream = bf.readLine();
+
+		return cream;
+		
+		} catch (IOException e) {
+			view.showMessage("잘못된 입력입니다.");
+			return choseTaste();
+		}
+		
+	}
+	
+	private IcecreamCup icecreamMix(String cream) { // 콘 추가 여부 묻기
+		
+		IcecreamCup icup = new IcecreamCup(cream);
+		boolean corn = false;
+		
+		if (icecreamCorn()) {// 콘 추가 여부 묻기
+			corn = true;
+			icup.setCorn(corn); 
+			view.showMessage("콘 추가 + 믹스 주문하셨습니다.");
+			return icup;
+		}
+	
+		else { 
+		view.showMessage("믹스 주문하셨습니다.");	
+		return icup;
+		}
+	}
+
+
+	private boolean icecreamCorn() {
+		return view.askConfirm("컵에 콘 추가 : yes 입력, 취소 : 아무키나 누르세요.", "yes");
+	}
+	
+	
+	
 	private void registerCustomerInfo() {
 		iCustomer = new Customer();	
+		view.inputCustomerInfo(iCustomer);
 	}
 
 	// Icecream Fridge에서 아이스크림 삭제
@@ -90,10 +154,10 @@ public class IcecreamController {
 		
 			// 아이스크림 창고 보여주기
 			viewIcecreamInfo();
-			//도서 ID 입력 받기
+			//아이스크림 이름 입력 받기
 			String name = view.selectIcecreamName(fridge);
 			if (view.askConfirm(">> 해당 아이스크림를 삭제하려면 yes를 입력하세요 : ", "yes")) {
-			   	// 해당 도서 ID의 cartItem 삭제
+			   	// 해당 아이스크림의 cartItem 삭제
 				fridge.deleteItem(name);
 				view.showMessage(">> 해당 아이스크림를 삭제했습니다.");
 				}
@@ -104,19 +168,12 @@ public class IcecreamController {
 		view.displayIcecreamInfo(fridge);
 	}
 
-	private void saveIcecreamList2File() {
-		if (fridge.isSaved()) {
-			view.showMessage("아이스크림 정보 파일과 동일합니다.");
-		} else {
-			fridge.saveIcecreamList2File();
-			view.showMessage("아이스크림 정보를 저장하였습니다.");
-		}
-	}
+
 	
-	private void addBook2Storage() {
+	private void addIcecream2Fridge() {
 		view.showMessage("새로운 아이스크림을 추가합니다.");
 		
-		// 책정보로 Book 인스턴스 만들어서 mBookStorage에 추가
+		// 아이스크림 정보로 Icecream 인스턴스 만들어서 fridge에 추가
 		fridge.addIcecream(view.inputString("아이스크림 이름 : "), view.inputString("맛 : "), view.readNumber("가격 : "));
 		
 	}
@@ -133,6 +190,7 @@ public class IcecreamController {
 		//주문할건지 다시 확인
 		if (view.askConfirm("정말 주문하시겠습니까 ? yes 아님 no를 입력해주세요.", "yes")) {
 			//주문 처리
+			view.displayOrder(iCart, iCustomer);
 			iCart.resetCart();
 		}
 	}
@@ -191,27 +249,6 @@ public class IcecreamController {
 		view.displayCart(iCart);
 	}
 
-	private void choseTasteMix()throws IOException { // 아이스크림 메뉴 입력
-		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-		view.showMessage("여러가지 아이스크림들을 층층이 쌓습니다. >>");
-		String cream = bf.readLine();
-		icecreamMix(cream);
-	}
-
-	private void icecreamMix(String cream)throws IOException { // 메인메뉴 스위치 7번 >> view.icecreamSelection >> choosenIce() >> selectIcecreamVar 순서대로 호출됨
-		
-		if (cream.contains("콘")) {
-			view.showMessage("\n콘 추가 + 믹스 주문하셨습니다.");
-			return;
-		}
-		else if (cream.contains("아니오") || cream.equals("믹스")) {
-			view.showMessage("\n컵 없이 믹스로 주문하셨습니다.");
-			return;
-		} else {
-			view.showMessage("\n없는 메뉴거나 잘못된 입력입니다.");
-			choseTasteMix();
-		}
-		
-	}
+	
 
 }
