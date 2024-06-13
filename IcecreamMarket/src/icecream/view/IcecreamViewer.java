@@ -1,5 +1,8 @@
 package icecream.view;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 import icecream.model.Cart;
@@ -107,7 +110,7 @@ public class IcecreamViewer {
 				name = inputString(" 아이스크림 이름 입력 : ");
 				result = cart.isValidItem(name);
 				if (!result)
-					System.out.print("잘못된 아이스크림 이름입니다.");
+					showMessage("잘못된 아이스크림 이름입니다.");
 			} while (!result);
 			
 			return name;
@@ -142,11 +145,18 @@ public class IcecreamViewer {
 		// 고객 정보 입력 받기
 		public void inputCustomerInfo(Customer customer) {
 			Scanner input = new Scanner(System.in);
-			System.out.println("온라인 서점을 이용하시려면 이름과 전화번호를 입력하세요.");
+			String phone = "";
+			String name = "";
+			do {
+			System.out.println("온라인 아이스크림 마켓을 이용하시려면 이름과 전화번호를 입력하세요.");
 			System.out.print(">> 이름 : ");
-			customer.setName(input.nextLine());
+			name = input.nextLine();
+			customer.setName(name);
 			System.out.print(">> 전화번호 : ");
-			customer.setPhone(input.nextLine());
+			phone = input.nextLine();
+			customer.setPhone(phone);
+			if (name.equals("") || phone.equals("")) showMessage("공백은 입력불가입니다.");
+			} while(name.equals("") || phone.equals(""));
 		}
 
 		
@@ -171,14 +181,22 @@ public class IcecreamViewer {
 		/////////////////////  공용 모듈 ////////////////////////
 		
 		// 입력된 문자열을 입력했을 때만 true를 반환하는 confirm용
-		public boolean askConfirm(String message, String yes) {
+		public boolean askConfirm(String message, String yes, String no) {
 			
 			System.out.print(message);
 			
 			Scanner input = new Scanner(System.in);
-			if (input.nextLine().equals(yes)) return true;
-			return false;
+			String ask = input.nextLine();
+			if (ask.equals(yes)) {
+				return true;
+			}
+	
+			else if (ask.equals(no)) {
+				showMessage("취소하여 메뉴로 다시 돌아갑니다.");
+				return false;
+			}
 			
+			else return false;
 		}
 		
 		// 숫자 입력 받기 (숫자가 아닌 문자를 넣으면 예외 처리하고 다시 입력받기)
@@ -208,6 +226,58 @@ public class IcecreamViewer {
 			System.out.println("초콜릿 / 바나나 / 바닐라 / 딸기 / 망고 / 커피 맛 중 아무거나 1개 이상 적어주세요.");
 		}
 		
+		public String inputTaste() { // 믹스 선택 시 아이스크림컵에 담을 맛들을 입력
+			BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+			String cream = null;
+			
+			try {
+			showMessage("컵에 여러가지 맛들을 층층이 쌓습니다. 넣을 맛들을 입력해주세요. >>");
+			cream = bf.readLine();
+			
+			return cream;
+			
+			} catch (IOException e) {
+				showMessage("잘못된 입력입니다.");
+				return cream;
+				}
+			
+		}
 
+		public boolean askCorn_firm(String message, String yes, String no) {
+			// 콘 추가 여부를 묻는 메서드
+			System.out.print(message);
+			
+			Scanner input = new Scanner(System.in);
+			String ask;
+			do {
+				ask = input.nextLine();
+				if (ask.equals(yes)) {
+					return true;
+				}
+	
+				else if (ask.equals(no)) {
+					return false;
+				}
+			
+				else showMessage("잘못된 입력입니다, 콘을 추가하시려면 yes / 취소는 no를 입력해주세요.");
+				
+			} while (ask != yes || ask != no);
+			
+			return false;
+		}
 
+		public String[] displayAdminCheck() {
+			Scanner sc = new Scanner(System.in);
+			
+			showMessage("관리자 모드로 들어가시려면 관리자 전용 ID와 PWD를 입력하셔야 합니다. >>");
+			
+			String[] idpwdArr = new String[2];
+			System.out.print("ID >>");
+			idpwdArr[0] = sc.nextLine();
+			System.out.print("Password >>");
+			idpwdArr[1] = sc.nextLine();
+			
+			return idpwdArr;
+			
+		}
 }

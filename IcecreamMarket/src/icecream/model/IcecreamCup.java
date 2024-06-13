@@ -11,7 +11,8 @@ public class IcecreamCup {
 		this.taste = newTaste;
 	}
 	
-	public String getTaste() {
+	
+	public String getTasteMix() {
 		
 		if (this.corn) {
 			return taste += " 믹스 (콘 추가)";
@@ -28,11 +29,13 @@ public class IcecreamCup {
 
 	public Icecream getIcecreamFromCup() {
 		
-		// 아이스크림에 taste와 이름 부여
-		Icecream mixedIce = new Icecream(1800, this.taste, "<커스텀 믹스>");
+		// 아이스크림에 이름, taste와 가격 부여, 이름인 <커스텀 믹스>와 가격 1800원은 고정
+		Icecream mixedIce = new Icecream("<커스텀 믹스>", this.taste, 1800);
 		return mixedIce;
 		
 	}
+
+	
 
 	
 

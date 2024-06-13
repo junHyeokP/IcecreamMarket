@@ -26,16 +26,15 @@ public class IcecreamFridge {
 		try {
 			fr = new BufferedReader(new FileReader(icecreamFilename)); // 로컬 파일 내 icecreamlist.txt라는 파일을 찾아 읽어주는 명령어
 			BufferedReader bf = new BufferedReader(fr);
-			String idStr;
-			while ((idStr = bf.readLine()) != null && !idStr.equals("")) {
-				String name = bf.readLine();
+			String name;
+			while ((name = bf.readLine()) != null && !name.equals("")) {
 				String taste = bf.readLine();
 				int price = Integer.parseInt(bf.readLine());
-				icecreamList.add(new Icecream(price, taste, name));
+				icecreamList.add(new Icecream(name, taste, price));
 			}
 		
 		} catch (FileNotFoundException | NumberFormatException e) {
-			System.out.println(e.getMessage());
+			System.out.println(e.getMessage() + "파일을 불러오는중 오류가 발생했습니다.");
 		}
 		
 	}
@@ -91,7 +90,7 @@ public class IcecreamFridge {
 
 	public void addIcecream(String name, String taste, int price) {
 		
-		Icecream icecream = new Icecream(price, name, taste);
+		Icecream icecream = new Icecream(name, taste, price);
 		icecreamList.add(icecream);
 		isSaved = false;
 	}
@@ -99,11 +98,11 @@ public class IcecreamFridge {
 		return isSaved();
 	}
 
-	public void saveIcecreamList2File() {
+	public void writeIcecreamList2File() {
 		
 		try {
-			BufferedWriter fw = new BufferedWriter(new FileWriter(icecreamFilename));
-			for (Icecream icecream : icecreamList) {
+			BufferedWriter fw = new BufferedWriter(new FileWriter(icecreamFilename)); // 변수가 참조하고 있는 텍스트 파일에 Icecream의 정보들을 줄 바꿈하며 적음 
+			for (Icecream icecream : icecreamList) {  
 				fw.write(icecream.getName() + "\n");
 				fw.write(icecream.getTaste() + "\n");
 				fw.write(icecream.getPrice() + "\n");
@@ -115,14 +114,8 @@ public class IcecreamFridge {
 		} 
 	}
 
-
 	public Icecream getIcecreamCupByName(String name, IcecreamCup icup) {
 		return icup.getIcecreamFromCup(); // 아이스크림 컵 자체를 담으려 했는데 방법이 안떠올라서 그냥 아이스크림을 담음
 	}
-
-
-	
-
-
 }
 

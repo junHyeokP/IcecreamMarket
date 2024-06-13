@@ -6,10 +6,11 @@ public class Icecream {
 	private String taste;
 	private String name;
 
-	Icecream(int price, String taste, String name) {
-		this.price = price;
-		this.taste = taste;
+	Icecream(String name, String taste, int price) {
+		
 		this.name = name;
+		this.taste = taste;
+		this.price = price;
 	}
 
 	public String getTaste() {

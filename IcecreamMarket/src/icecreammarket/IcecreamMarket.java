@@ -11,14 +11,14 @@ public class IcecreamMarket {
 	
 	public static void main(String[] args) throws IOException {
 		
-		// model
+		// model (냉장고)
 		IcecreamFridge fridge = new IcecreamFridge();
 		Cart cart = new Cart();
 		
-		// view
+		// view (뷰어)
 		IcecreamViewer view = new IcecreamViewer();
 		
-		// controller
+		// controller (컨트롤러)
 		IcecreamController cntr = new IcecreamController(fridge, cart, view);
 		cntr.enterIcecreamMarket();
 	}
