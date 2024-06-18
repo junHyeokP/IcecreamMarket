@@ -95,7 +95,7 @@ public class IcecreamFridge {
 		isSaved = false;
 	}
 	public boolean isSaved() {
-		return isSaved();
+		return isSaved;
 	}
 
 	public void writeIcecreamList2File() {

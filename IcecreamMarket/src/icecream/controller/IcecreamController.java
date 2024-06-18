@@ -1,6 +1,6 @@
 package icecream.controller;
 
-import java.io.BufferedReader;
+import java.io.BufferedReader; 
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -202,7 +202,7 @@ public class IcecreamController {
 			// 아이스크림 창고 보여주기
 			viewIcecreamInfo();
 			//아이스크림 이름 입력 받기
-			String name = view.selectIcecreamName(fridge);
+			String name = view.deleteIcecreamName(fridge);
 			if (view.askConfirm(">> 해당 아이스크림를 삭제하려면 yes를, 취소하시려면 no를 입력하세요 : ", "yes", "no")) {
 			   	// 해당 아이스크림의 cartItem 삭제
 				fridge.deleteItem(name);

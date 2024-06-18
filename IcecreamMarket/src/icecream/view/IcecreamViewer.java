@@ -100,6 +100,21 @@ public class IcecreamViewer {
 					
 			return name;
 		}
+		
+		// fridge에 있는 아이스크림을 삭제하기
+				public String deleteIcecreamName(IcecreamFridge fridge) {
+						
+					String name;
+					boolean result;
+					do {
+						name = inputString("냉장고에서 치울 아이스크림의 이름를 입력하세요 : ");
+						result = fridge.isValidIcecream(name);
+						if (!result)
+							System.out.print("잘못된 아이스크림 이름입니다.");
+					} while (!result);
+							
+					return name;
+				}
 
 		// cart에 있는 아이스크림을 이름으로 선택하기
 		public String selectName(Cart cart) {
